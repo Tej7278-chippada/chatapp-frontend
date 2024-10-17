@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-// import { Box, TextField, Button, Typography } from '@mui/material';
+import { Box, TextField, Button, Typography } from '@mui/material';
 import {useNavigate } from 'react-router-dom'; // Import useNavigate hook
+
 const Login = ({ setUser }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -35,6 +36,10 @@ const Login = ({ setUser }) => {
       }
     }
   };
+
+  const goToRegister = () => {
+    navigate('/register'); // Redirects to the register page
+  };
   
 
   return (
@@ -45,7 +50,7 @@ const Login = ({ setUser }) => {
     //   <Button variant="contained" onClick={handleLogin}>Login</Button>
     // </Box>
     <div>
-      <h2>Login</h2>
+      {/* <h2>Login</h2>
       <form onSubmit={handleLogin}>
         <div>
           <label>Username</label>
@@ -67,7 +72,56 @@ const Login = ({ setUser }) => {
         </div>
         {error && <p style={{ color: 'red' }}>{error}</p>}
         <button type="submit">Login</button>
-      </form>
+      </form> */}
+
+    <Box
+      component="form"
+      onSubmit={handleLogin}
+      sx={{ maxWidth: '400px', margin: 'auto', padding: '1rem' }}
+    >
+      <Typography variant="h4" gutterBottom>
+        Login
+      </Typography>
+
+      <TextField
+        fullWidth
+        label="Username"
+        value={username}
+        onChange={(e) => setUsername(e.target.value)}
+        margin="normal"
+        required
+      />
+
+      <TextField
+        fullWidth
+        label="Password"
+        type="password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        margin="normal"
+        required
+      />
+
+      {error && (
+        <Typography color="error" variant="body2">
+          {error}
+        </Typography>
+      )}
+
+      <Button type="submit" variant="contained" color="primary" fullWidth>
+        Login
+      </Button>
+
+      <Button
+        variant="outlined"
+        color="secondary"
+        fullWidth
+        sx={{ marginTop: '1rem' }}
+        onClick={goToRegister} // This will redirect to the register page
+      >
+        Don't have an account? Register
+      </Button>
+    </Box>
     </div>
   );
 };
