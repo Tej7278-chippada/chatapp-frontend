@@ -10,6 +10,7 @@ function App() {
   // const [user, setUser] = useState(null);
 
   return (
+
     <Router>
       <Routes>
         <Route path="/" element={<Login />} />
@@ -22,6 +23,8 @@ function App() {
         
       </Routes>
     </Router>
+  
+    
     // <div>
     //   {user ? (
     //     <Chat userId={user._id} receiverId="receiver_id_here" />

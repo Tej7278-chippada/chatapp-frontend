@@ -1,107 +1,103 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { TextField, Button, Box, Typography } from '@mui/material';
+import { TextField, Button, Typography, Box, Alert } from '@mui/material';
 import axios from 'axios';
+import Layout from './Layout';
 
 const Register = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
-  const navigate = useNavigate();
-
-  const validateUsername = (username) => {
-    const usernameRegex = /^[A-Za-z][A-Za-z0-9@_]{6,}$/;
-    return usernameRegex.test(username);
-  };
-
-  const validatePassword = (password) => {
-    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@]).{8,}$/;
-    return passwordRegex.test(password);
-  };
+  const [success, setSuccess] = useState('');
 
   const handleRegister = async (e) => {
     e.preventDefault();
+    setError('');
 
-    if (!validateUsername(username)) {
-      setError('Username must start with a letter, contain @ or _, and at least one number.');
+    // Validate username and password
+    const usernameRegex = /^[A-Z][A-Za-z0-9@_-]{5,}$/;
+    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*@).{8,}$/;
+
+    if (!usernameRegex.test(username)) {
+      setError(
+        'Username must start with a capital letter, be at least 6 characters long, contain at least one number, and can include @, _, or -. No lowercase letters allowed.'
+      );
       return;
     }
 
-    if (!validatePassword(password)) {
-      setError('Password must be at least 8 characters long and include letters, numbers, and @.');
+    if (!passwordRegex.test(password)) {
+      setError(
+        'Password must be at least 8 characters long, contain at least one letter, one number, and include @.'
+      );
       return;
     }
 
     if (password !== confirmPassword) {
-      setError('Passwords do not match.');
+      setError('Password and confirm password do not match.');
       return;
     }
 
     try {
-      const response = await axios.post('/api/auth/register', { username, password });
+      const response = await axios.post('http://localhost:5002/api/auth/register', { username, password });
+      setSuccess(`Your new account has been created with username: ${username}`);
+      setUsername('');
+      setPassword('');
+      setConfirmPassword('');
       if (response.status === 201) {
-        // Redirect to login after successful registration
-        navigate('/');
+        // window.location.href = '/';
       }
     } catch (error) {
-      if (error.response && error.response.data) {
-        setError(error.response.data.message);
-      } else {
-        setError('An error occurred during registration');
-      }
+      setError(error.response.data.message || 'An error occurred during registration.');
     }
   };
 
   return (
-    <Box
-      component="form"
-      onSubmit={handleRegister}
-      sx={{ maxWidth: '400px', margin: 'auto', padding: '1rem' }}
-    >
+    <Layout>
+    <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center" minHeight="100vh">
       <Typography variant="h4" gutterBottom>
         Register
       </Typography>
-
-      <TextField
-        fullWidth
-        label="Username"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
-        margin="normal"
-        required
-      />
-
-      <TextField
-        fullWidth
-        label="Password"
-        type="password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        margin="normal"
-        required
-      />
-
-      <TextField
-        fullWidth
-        label="Confirm Password"
-        type="password"
-        value={confirmPassword}
-        onChange={(e) => setConfirmPassword(e.target.value)}
-        margin="normal"
-        required
-      />
-
-      {error && (
-        <Typography color="error" variant="body2">
-          {error}
+      <form onSubmit={handleRegister} style={{ maxWidth: '400px', width: '100%' }}>
+        <TextField
+          label="Username"
+          variant="outlined"
+          fullWidth
+          margin="normal"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+        />
+        <TextField
+          label="Password"
+          type="password"
+          variant="outlined"
+          fullWidth
+          margin="normal"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        <TextField
+          label="Confirm Password"
+          type="password"
+          variant="outlined"
+          fullWidth
+          margin="normal"
+          value={confirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}
+        />
+        {error && <Alert severity="error">{error}</Alert>}
+        {success && <Alert severity="success">{success}</Alert>}
+        <Button type="submit" variant="contained" color="primary" fullWidth>
+          Register
+        </Button>
+        <Typography variant="body2" align="center" style={{ marginTop: '10px' }}>
+          Already have an account?{' '}
+          <Button href="/" variant="text">
+            Login
+          </Button>
         </Typography>
-      )}
-
-      <Button type="submit" variant="contained" color="primary" fullWidth>
-        Register
-      </Button>
+      </form>
     </Box>
+    </Layout>
   );
 };
 

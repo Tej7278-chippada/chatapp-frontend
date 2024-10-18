@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Box, TextField, Button, List, ListItem, Typography } from '@mui/material';
+import Layout from './Layout';
 
 
 const Chat = ({ userId, receiverId }) => {
@@ -40,6 +41,7 @@ const Chat = ({ userId, receiverId }) => {
   }, []); // Empty dependency array means it runs once when the component mounts
 
   return (
+    <Layout>
     <div>
      <div>
        <h1>Chat Messages</h1>
@@ -69,6 +71,7 @@ const Chat = ({ userId, receiverId }) => {
         <Button variant="contained" onClick={sendMessage}>Send</Button>
       </Box>
     </div>
+    </Layout>
   );
 };
 

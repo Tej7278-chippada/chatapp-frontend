@@ -1,128 +1,77 @@
 import React, { useState } from 'react';
+import { TextField, Button, Typography, Box, Alert } from '@mui/material';
 import axios from 'axios';
-import { Box, TextField, Button, Typography } from '@mui/material';
-import {useNavigate } from 'react-router-dom'; // Import useNavigate hook
+import Layout from './Layout';
 
-const Login = ({ setUser }) => {
+const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const navigate = useNavigate(); // Initialize useNavigate
+  const [success, setSuccess] = useState('');
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    setError('');
+    setSuccess('');
+
     try {
-      const response = await axios.post('/api/auth/login', { username, password });
+      const response = await axios.post('http://localhost:5002/api/auth/login', { username, password });
+      setSuccess(`You are logged in with username: ${username}`);
+      setUsername('');
+      setPassword('');
+      // Redirect to chat page or dashboard here
       if (response.status === 200) {
-        // Successful login
-        const { token, user } = response.data;
-        console.log('Login successful:', user);
-        localStorage.setItem('token', token);  // Save JWT to localStorage
-        // Redirect user to home page or show success message
-        // Redirect to the chat page
-        navigate('/chat');  // <-- This will redirect the user to the /chat route
+        window.location.href = '/chat';
       }
     } catch (error) {
-      if (error.response) {
-        // Response errors from server
-        setError(error.response.data.message);
-        console.error('Login error:', error.response.data.message);
-        alert(error.response.data.message);  // Show error message to the user
+      if (error.response && error.response.status === 404) {
+        setError(`Username ${username} doesn't match any existing account.`);
+      } else if (error.response && error.response.status === 401) {
+        setError(`Password doesn't match for username: ${username}`);
       } else {
-        // Network errors or other unexpected errors
-        setError('An unexpected error occurred');
-        console.error('Unexpected error:', error);
-        alert('Unexpected error occurred. Please try again.');
+        setError('An error occurred while logging in.');
       }
     }
   };
 
-  const goToRegister = () => {
-    navigate('/register'); // Redirects to the register page
-  };
-  
-
   return (
-    // <Box>
-    //   <Typography variant="h5">Login</Typography>
-    //   <TextField label="Username" value={username} onChange={(e) => setUsername(e.target.value)} />
-    //   <TextField label="Password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-    //   <Button variant="contained" onClick={handleLogin}>Login</Button>
-    // </Box>
-    <div>
-      {/* <h2>Login</h2>
-      <form onSubmit={handleLogin}>
-        <div>
-          <label>Username</label>
-          <input
-            type="text"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            required
-          />
-        </div>
-        <div>
-          <label>Password</label>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </div>
-        {error && <p style={{ color: 'red' }}>{error}</p>}
-        <button type="submit">Login</button>
-      </form> */}
-
-    <Box
-      component="form"
-      onSubmit={handleLogin}
-      sx={{ maxWidth: '400px', margin: 'auto', padding: '1rem' }}
-    >
+    <Layout>
+    <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center" minHeight="100vh">
       <Typography variant="h4" gutterBottom>
         Login
       </Typography>
-
-      <TextField
-        fullWidth
-        label="Username"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
-        margin="normal"
-        required
-      />
-
-      <TextField
-        fullWidth
-        label="Password"
-        type="password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        margin="normal"
-        required
-      />
-
-      {error && (
-        <Typography color="error" variant="body2">
-          {error}
+      <form onSubmit={handleLogin} style={{ maxWidth: '400px', width: '100%' }}>
+        <TextField
+          label="Username"
+          variant="outlined"
+          fullWidth
+          margin="normal"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+        />
+        <TextField
+          label="Password"
+          type="password"
+          variant="outlined"
+          fullWidth
+          margin="normal"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        {error && <Alert severity="error">{error}</Alert>}
+        {success && <Alert severity="success">{success}</Alert>}
+        <Button type="submit" variant="contained" color="primary" fullWidth>
+          Login
+        </Button>
+        <Typography variant="body2" align="center" style={{ marginTop: '10px' }}>
+          Don't have an account?{' '}
+          <Button href="/register" variant="text">
+            Register
+          </Button>
         </Typography>
-      )}
-
-      <Button type="submit" variant="contained" color="primary" fullWidth>
-        Login
-      </Button>
-
-      <Button
-        variant="outlined"
-        color="secondary"
-        fullWidth
-        sx={{ marginTop: '1rem' }}
-        onClick={goToRegister} // This will redirect to the register page
-      >
-        Don't have an account? Register
-      </Button>
+      </form>
     </Box>
-    </div>
+    </Layout>
   );
 };
 
