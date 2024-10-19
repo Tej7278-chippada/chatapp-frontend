@@ -2,12 +2,15 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Box, TextField, Button, List, ListItem, Typography } from '@mui/material';
 import Layout from './Layout';
+import { useNavigate } from 'react-router-dom';
 
 
 const Chat = ({ userId, receiverId }) => {
   const [messages, setMessages] = useState([]);
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
+  const tokenusername = localStorage.getItem('tokenusername'); // Get the username from local storage
+  const navigate = useNavigate();
 
 
   // const fetchMessages = async () => {
@@ -38,10 +41,15 @@ const Chat = ({ userId, receiverId }) => {
   // useEffect to fetch messages when the component mounts
   useEffect(() => {
     fetchMessages();
-  }, []); // Empty dependency array means it runs once when the component mounts
+    const token = localStorage.getItem('token', 'tokenusername');
+    if (!token) {
+      navigate('/');
+    }
+    // Optionally verify the token by making a request to the backend
+  }, [navigate]); // Empty dependency array means it runs once when the component mounts
 
   return (
-    <Layout>
+    <Layout username={tokenusername}>
     <div>
      <div>
        <h1>Chat Messages</h1>

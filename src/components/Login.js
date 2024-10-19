@@ -2,12 +2,16 @@ import React, { useState } from 'react';
 import { TextField, Button, Typography, Box, Alert } from '@mui/material';
 import axios from 'axios';
 import Layout from './Layout';
+import { useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -19,10 +23,22 @@ const Login = () => {
       setSuccess(`You are logged in with username: ${username}`);
       setUsername('');
       setPassword('');
-      // Redirect to chat page or dashboard here
-      if (response.status === 200) {
-        window.location.href = '/chat';
+
+      const { token, tokenusername } = response.data;
+      if (token) {
+        // Store the token in localStorage
+        localStorage.setItem('token', token);
+        localStorage.setItem('tokenusername', tokenusername);
+        // Redirect to chat page
+        navigate('/chat');
+      } else {
+        setError('Token is missing in response');
       }
+      
+      // Redirect to chat page or dashboard here
+      // if (response.status === 200) {
+      //   window.location.href = '/chat';
+      // }
     } catch (error) {
       if (error.response && error.response.status === 404) {
         setError(`Username ${username} doesn't match any existing account.`);
@@ -41,6 +57,7 @@ const Login = () => {
         Login
       </Typography>
       <form onSubmit={handleLogin} style={{ maxWidth: '400px', width: '100%' }}>
+      {location.state?.message && <div>{location.state.message}</div>}
         <TextField
           label="Username"
           variant="outlined"
