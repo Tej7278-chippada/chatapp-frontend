@@ -5,6 +5,7 @@ import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import { useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 const Header = ({ username }) => {
   const location = useLocation();
@@ -13,7 +14,7 @@ const Header = ({ username }) => {
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
         <Toolbar>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+          <Typography variant="h6" component={Link} to="/" style={{ flexGrow: 1, textDecoration: 'none', color: 'inherit' }} sx={{ flexGrow: 1 }}>
             ChatApp
           </Typography>
           {location.pathname === '/chat' && username && (
