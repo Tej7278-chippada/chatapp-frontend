@@ -24,13 +24,13 @@ const Login = () => {
       setUsername('');
       setPassword('');
 
-      const { token, tokenusername } = response.data;
-      if (token) {
+      const { authToken, tokenUsername } = response.data;
+      if (authToken) {
         // Store the token in localStorage
-        localStorage.setItem('token', token);
-        localStorage.setItem('tokenusername', tokenusername);
+        localStorage.setItem('authToken', authToken);
+        localStorage.setItem('tokenUsername', tokenUsername);
         // Redirect to chat page
-        navigate('/chat');
+        navigate('/chat'); // navigate(`/chat-${username}`);
       } else {
         setError('Token is missing in response');
       }

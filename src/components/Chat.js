@@ -3,14 +3,17 @@ import axios from 'axios';
 import { Box, TextField, Button, List, ListItem, Typography } from '@mui/material';
 import Layout from './Layout';
 import { useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 
 const Chat = ({ userId, receiverId }) => {
   const [messages, setMessages] = useState([]);
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
-  const tokenusername = localStorage.getItem('tokenusername'); // Get the username from local storage
+  const tokenUsername = localStorage.getItem('tokenUsername'); // Get the username from local storage
   const navigate = useNavigate();
+  const { username } = useParams(); // Get the username from the URL
+  console.log('Username from URL:', username);  // Debugging: should show the extracted username
 
 
   // const fetchMessages = async () => {
@@ -41,15 +44,16 @@ const Chat = ({ userId, receiverId }) => {
   // useEffect to fetch messages when the component mounts
   useEffect(() => {
     fetchMessages();
-    const token = localStorage.getItem('token', 'tokenusername');
-    if (!token) {
+    const authToken = localStorage.getItem('authToken', 'tokenUsername');
+    if (!authToken) {
       navigate('/');
     }
     // Optionally verify the token by making a request to the backend
   }, [navigate]); // Empty dependency array means it runs once when the component mounts
+  // console.log('Username from URL:', username);
 
   return (
-    <Layout username={tokenusername}>
+    <Layout username={tokenUsername}>
     <div>
      <div>
        <h1>Chat Messages</h1>
@@ -62,6 +66,9 @@ const Chat = ({ userId, receiverId }) => {
         </ul>
       </div>
       <Box>
+      <Typography variant="h4" gutterBottom>
+        Welcome to the Chat, {username}!
+      </Typography>
         <List>
           {messages.map((msg) => (
             <ListItem key={msg._id}>

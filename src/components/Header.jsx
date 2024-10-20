@@ -14,9 +14,11 @@ const Header = ({ username }) => {
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
         <Toolbar>
-          <Typography variant="h6" component={Link} to="/" style={{ flexGrow: 1, textDecoration: 'none', color: 'inherit' }} sx={{ flexGrow: 1 }}>
+        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+          <Link to="/" style={{ color: 'inherit', textDecoration: 'none', display: 'inline-block' }}>
             ChatApp
-          </Typography>
+          </Link>
+        </Typography>
           {location.pathname === '/chat' && username && (
             <Typography variant="body1">
               {username}

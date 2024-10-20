@@ -16,7 +16,8 @@ function App() {
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/chat" element={
+        {/* Dynamic route for chat page  path="/chat-:username"*/} 
+        <Route path="/chat" element={ 
             <PrivateRoute>
               <Chat />
             </PrivateRoute>
