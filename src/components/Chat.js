@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Box, TextField, Button, List, ListItem, Typography } from '@mui/material';
+import { Box, TextField, Button, List, ListItem, Typography, Card, CardContent} from '@mui/material';
 import Layout from './Layout';
 import { useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
@@ -56,16 +56,16 @@ const Chat = ({ userId, receiverId }) => {
     <Layout username={tokenUsername}>
     <div>
      <div>
-       <h1>Chat Messages</h1>
-        {loading && <p>Loading messages...</p>} {/* Show loading indicator */}
-        {error && <p style={{ color: 'red' }}>{error}</p>}
-        <ul>
+       {/* <h1>Chat Messages</h1> */}
+        {/* {loading && <p>Loading messages...</p>}  */}
+        {/* {error && <p style={{ color: 'red' }}>{error}</p>} */}
+        {/* <ul>
           {messages.map((message) => (
             <li key={message._id}>{message.text}</li> // Assuming each message has an `_id` and `text` property
           ))}
-        </ul>
+        </ul> */}
       </div>
-      <Box>
+      {/* <Box>
       <Typography variant="h4" gutterBottom>
         Welcome to the Chat, {username}!
       </Typography>
@@ -84,7 +84,49 @@ const Chat = ({ userId, receiverId }) => {
           onChange={(e) => setMessage(e.target.value)}
         />
         <Button variant="contained" onClick={sendMessage}>Send</Button>
+      </Box> */}
+      <Box display="flex" flexDirection="row" gap={1.5} p={2}
+      sx={{
+        // position: 'fixed',
+        top: 65,
+        left: 0,
+        // width: '100%',
+        height: '90vh',
+        overflow: 'hidden',
+        alignItems: 'center',
+        justifyContent: 'center',
+        bgcolor: '#f5f5f5', // Background color for Box (can be customized)
+      }}
+      >
+        {/* Chats Card */}
+        <Card sx={{ flex: 1,
+          height: '90vh', // Fixed height relative to viewport
+          overflowY: 'auto',
+          bgcolor: 'white', // Card background color (customizable)
+          borderRadius: 3, // Card border radius (customizable)
+          boxShadow: 3, // Shadow for a modern look
+          }}>
+          <CardContent>
+            <Typography variant="h6">Chats</Typography>
+            
+          </CardContent>
+        </Card>
+
+        {/* Chat History Card */}
+        <Card sx={{ flex: 3,
+          height: '90vh', // Fixed height relative to viewport
+          overflowY: 'auto',
+          bgcolor: 'white', // Card background color (customizable)
+          borderRadius: 3, // Card border radius (customizable)
+          boxShadow: 3, // Shadow for a modern look
+           }}>
+          <CardContent>
+          <Typography variant="h6">Chat Messages</Typography>
+            
+          </CardContent>
+        </Card>
       </Box>
+
     </div>
     </Layout>
   );
