@@ -4,6 +4,7 @@ import axios from 'axios';
 import Layout from './Layout';
 import { useNavigate } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 const Login = () => {
   const [username, setUsername] = useState('');
@@ -86,6 +87,9 @@ const Login = () => {
             Register
           </Button>
         </Typography>
+        <Link to="/register" style={{ color: 'inherit', textDecoration: 'none', display: 'inline-block' }}>
+            ChatApp
+          </Link>
       </form>
     </Box>
     </Layout>
