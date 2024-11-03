@@ -24,8 +24,8 @@ const Chat = ({ userId, receiverId }) => {
   const [loading, setLoading] = useState(true);
   // Function to fetch messages from the backend
   const fetchMessages = async () => {
-    try {
-      const response = await axios.get('http://localhost:5002/api/messages'); // Adjust the URL based on your proxy setup
+    try {                             // 'http://localhost:5002/api/messages'
+      const response = await axios.get('https://tej-chat-app-8cd7e70052a5.herokuapp.com/api/messages'); // Adjust the URL based on your proxy setup
       setMessages(response.data); // Set the fetched messages in state
     } catch (error) {
       console.error('Error fetching messages:', error);
@@ -57,15 +57,15 @@ const Chat = ({ userId, receiverId }) => {
     <div>
      <div>
        {/* <h1>Chat Messages</h1> */}
-        {/* {loading && <p>Loading messages...</p>}  */}
-        {/* {error && <p style={{ color: 'red' }}>{error}</p>} */}
-        {/* <ul>
+        {loading && <p>Loading messages...</p>} 
+        {error && <p style={{ color: 'red' }}>{error}</p>}
+        <ul>
           {messages.map((message) => (
             <li key={message._id}>{message.text}</li> // Assuming each message has an `_id` and `text` property
           ))}
-        </ul> */}
+        </ul>
       </div>
-      {/* <Box>
+      <Box>
       <Typography variant="h4" gutterBottom>
         Welcome to the Chat, {username}!
       </Typography>
@@ -84,7 +84,7 @@ const Chat = ({ userId, receiverId }) => {
           onChange={(e) => setMessage(e.target.value)}
         />
         <Button variant="contained" onClick={sendMessage}>Send</Button>
-      </Box> */}
+      </Box>
       <Box display="flex" flexDirection="row" gap={1.5} p={2}
       sx={{
         // position: 'fixed',

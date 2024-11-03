@@ -23,7 +23,7 @@ const Header = ({ username }) => {
     if (value) {
       setLoading(true);
       try {
-        const response = await axios.get(`/api/users/search`, {
+        const response = await axios.get(`https://tej-chat-app-8cd7e70052a5.herokuapp.com/api/users/search`, {
           params: { username: value }
         });
         setSearchResults(response.data);
