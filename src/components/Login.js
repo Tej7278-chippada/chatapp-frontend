@@ -87,9 +87,13 @@ const Login = () => {
             Register
           </Button>
         </Typography>
-        <Link to="/register" style={{ color: 'inherit', textDecoration: 'none', display: 'inline-block' }}>
-            ChatApp
+        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+          <Link to="/register" style={{ color: 'inherit', textDecoration: 'none', display: 'inline-block' }}>
+          <Button variant="text">
+            Register
+          </Button>
           </Link>
+        </Typography>
       </form>
     </Box>
     </Layout>
