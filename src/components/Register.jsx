@@ -67,7 +67,7 @@ const Register = () => {
   return (
     <ThemeProvider theme={theme}>
     <Layout>
-    <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center" minHeight="100vh"
+    <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center" minHeight="70vh"
     padding={isMobile ? 2 : 4} // Adjust padding for mobile
     >
       <Typography variant={isMobile ? "h5" : "h4"} gutterBottom>
