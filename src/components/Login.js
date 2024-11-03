@@ -83,11 +83,9 @@ const Login = () => {
         </Button>
         <Typography variant="body2" align="center" style={{ marginTop: '10px' }}>
           Don't have an account?{' '}
-          <Button href="/register" variant="text">
-            Register
-          </Button>
-        </Typography>
-        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+          {/* <Button href="/register" variant="text">
+            Register  Can be used only site deployed on custom domain, cant use on static domain of netlify
+          </Button> */}
           <Link to="/register" style={{ color: 'inherit', textDecoration: 'none', display: 'inline-block' }}>
           <Button variant="text">
             Register
