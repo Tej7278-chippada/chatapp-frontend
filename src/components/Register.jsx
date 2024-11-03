@@ -37,8 +37,8 @@ const Register = () => {
       return;
     }
 
-    try {
-      const response = await axios.post('http://localhost:5002/api/auth/register', { username, password });
+    try {                             // 'http://localhost:5002/api/auth/register'
+      const response = await axios.post('https://tej-chat-app-8cd7e70052a5.herokuapp.com/api/auth/register', { username, password });
       setSuccess(`Your new account has been created with username: ${username}`);
       setUsername('');
       setPassword('');

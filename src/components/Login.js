@@ -18,8 +18,8 @@ const Login = () => {
     setError('');
     setSuccess('');
 
-    try {
-      const response = await axios.post('http://localhost:5002/api/auth/login', { username, password });
+    try {                              // 'http://localhost:5002/api/auth/login'
+      const response = await axios.post('https://tej-chat-app-8cd7e70052a5.herokuapp.com/api/auth/login', { username, password });
       setSuccess(`You are logged in with username: ${username}`);
       setUsername('');
       setPassword('');
