@@ -1,7 +1,19 @@
 import React, { useState } from 'react';
-import { TextField, Button, Typography, Box, Alert } from '@mui/material';
+import { TextField, Button, Typography, Box, Alert, useMediaQuery, ThemeProvider, createTheme } from '@mui/material';
 import axios from 'axios';
 import Layout from './Layout';
+
+const theme = createTheme({
+  breakpoints: {
+    values: {
+      xs: 0,
+      sm: 600,
+      md: 960,
+      lg: 1280,
+      xl: 1920,
+    },
+  },
+});
 
 const Register = () => {
   const [username, setUsername] = useState('');
@@ -9,6 +21,7 @@ const Register = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const isMobile = useMediaQuery(theme => theme.breakpoints.down('sm')); // Media query for small screens
 
   const handleRegister = async (e) => {
     e.preventDefault();
@@ -52,9 +65,12 @@ const Register = () => {
   };
 
   return (
+    <ThemeProvider theme={theme}>
     <Layout>
-    <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center" minHeight="100vh">
-      <Typography variant="h4" gutterBottom>
+    <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center" minHeight="100vh"
+    padding={isMobile ? 2 : 4} // Adjust padding for mobile
+    >
+      <Typography variant={isMobile ? "h5" : "h4"} gutterBottom>
         Register
       </Typography>
       <form onSubmit={handleRegister} style={{ maxWidth: '400px', width: '100%' }}>
@@ -98,6 +114,7 @@ const Register = () => {
       </form>
     </Box>
     </Layout>
+    </ThemeProvider>
   );
 };
 

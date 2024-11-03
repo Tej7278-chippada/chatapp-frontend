@@ -55,7 +55,52 @@ const Chat = ({ userId, receiverId }) => {
   return (
     <Layout username={tokenUsername}>
     <div>
-     <div>
+      {/* <CardContent> 
+      <Typography variant="h5" 
+      //gutterBottom
+      >
+          Welcome to the Chat, {tokenUsername}!
+      </Typography> 
+      </CardContent> */}
+      
+      <Box display="flex" flexDirection="row" gap={1.5} p={2}
+      sx={{
+        // position: 'fixed',
+        top: 65,
+        left: 0,
+        // width: '100%',
+        height: '80vh',
+        overflow: 'hidden',
+        alignItems: 'center',
+        justifyContent: 'center',
+        bgcolor: '#f5f5f5', // Background color for Box (can be customized)
+      }}
+      >
+        {/* Chats Card */}
+        <Card sx={{ flex: 1,
+          height: '80vh', // Fixed height relative to viewport
+          overflowY: 'auto',
+          bgcolor: 'white', // Card background color (customizable)
+          borderRadius: 3, // Card border radius (customizable)
+          boxShadow: 3, // Shadow for a modern look
+          }}>
+          <CardContent>
+            <Typography variant="h6">Chats</Typography>
+            
+          </CardContent>
+        </Card>
+
+        {/* Chat History Card */}
+        <Card sx={{ flex: 3,
+          height: '80vh', // Fixed height relative to viewport
+          overflowY: 'auto',
+          bgcolor: 'white', // Card background color (customizable)
+          borderRadius: 3, // Card border radius (customizable)
+          boxShadow: 3, // Shadow for a modern look
+           }}>
+          <CardContent>
+          <Typography variant="h6">Chat Messages</Typography>
+          <div>
        {/* <h1>Chat Messages</h1> */}
         {loading && <p>Loading messages...</p>} 
         {error && <p style={{ color: 'red' }}>{error}</p>}
@@ -66,9 +111,7 @@ const Chat = ({ userId, receiverId }) => {
         </ul>
       </div>
       <Box>
-      <Typography variant="h4" gutterBottom>
-        Welcome to the Chat, {username}!
-      </Typography>
+      
         <List>
           {messages.map((msg) => (
             <ListItem key={msg._id}>
@@ -85,43 +128,6 @@ const Chat = ({ userId, receiverId }) => {
         />
         <Button variant="contained" onClick={sendMessage}>Send</Button>
       </Box>
-      <Box display="flex" flexDirection="row" gap={1.5} p={2}
-      sx={{
-        // position: 'fixed',
-        top: 65,
-        left: 0,
-        // width: '100%',
-        height: '90vh',
-        overflow: 'hidden',
-        alignItems: 'center',
-        justifyContent: 'center',
-        bgcolor: '#f5f5f5', // Background color for Box (can be customized)
-      }}
-      >
-        {/* Chats Card */}
-        <Card sx={{ flex: 1,
-          height: '90vh', // Fixed height relative to viewport
-          overflowY: 'auto',
-          bgcolor: 'white', // Card background color (customizable)
-          borderRadius: 3, // Card border radius (customizable)
-          boxShadow: 3, // Shadow for a modern look
-          }}>
-          <CardContent>
-            <Typography variant="h6">Chats</Typography>
-            
-          </CardContent>
-        </Card>
-
-        {/* Chat History Card */}
-        <Card sx={{ flex: 3,
-          height: '90vh', // Fixed height relative to viewport
-          overflowY: 'auto',
-          bgcolor: 'white', // Card background color (customizable)
-          borderRadius: 3, // Card border radius (customizable)
-          boxShadow: 3, // Shadow for a modern look
-           }}>
-          <CardContent>
-          <Typography variant="h6">Chat Messages</Typography>
             
           </CardContent>
         </Card>

@@ -1,16 +1,19 @@
 // Header.js
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { AppBar, Toolbar, Typography, TextField, List, ListItem, ListItemText, ListItemIcon, Box, CircularProgress, Paper } from '@mui/material';
+import { AppBar, Toolbar, Typography, TextField, List, ListItem, ListItemText, ListItemIcon, Box, CircularProgress, Paper, useMediaQuery, } from '@mui/material';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import SearchIcon from '@mui/icons-material/Search';
 import axios from 'axios';
+import { useTheme } from '@mui/material/styles';
 
 const Header = ({ username }) => {
   const location = useLocation();
   const [searchTerm, setSearchTerm] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const [loading, setLoading] = useState(false);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm')); // Check if screen size is small
 
   // Only show search bar when user is logged in and on chat page
   const showSearchBar = location.pathname.includes('/chat') && username;
@@ -41,7 +44,7 @@ const Header = ({ username }) => {
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
         <Toolbar>
-        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+        <Typography variant={isMobile ? "h6" : "h5"} component="div" sx={{ flexGrow: 1 }}>
           <Link to="/" style={{ color: 'inherit', textDecoration: 'none', display: 'inline-block' }}>
             ChatApp
           </Link>
@@ -58,13 +61,15 @@ const Header = ({ username }) => {
               InputProps={{
                 endAdornment: <SearchIcon />, //sx={{ color: '#888' }}
               }}
-              style={{ width: 200 }}
+              sx={{
+                width: isMobile ? 150 : 200, // Responsive width
+              }}
             />
             {/* Search results dropdown */}
             {searchTerm && (
-              <Paper elevation={3} sx={{ position: 'absolute', top: '80%', mt: 1, zIndex: 10, maxWidth: 250 }}>
+              <Paper elevation={3} sx={{ position: 'absolute', top: '80%', mt: 1, zIndex: 10, maxWidth: isMobile ? 200 : 250, }}>
               <List style={{
-                position: 'absolute', background: 'white', width: 250, boxShadow: '0 4px 8px rgba(0,0,0,0.2)', borderRadius: '4px'
+                position: 'absolute', background: 'white', width: isMobile ? 200 : 250, boxShadow: '0 4px 8px rgba(0,0,0,0.2)', borderRadius: '4px'
               }}>
                 {loading ? (
                   <ListItem>
@@ -92,7 +97,9 @@ const Header = ({ username }) => {
           </Box>
         )}
           {location.pathname === '/chat' && username && (
-            <Typography variant="body1">
+            <Typography variant="body1" 
+            // sx={{ display: isMobile ? 'none' : 'block' }}
+            >
               {username}
             </Typography>
           )}

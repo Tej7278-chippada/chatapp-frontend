@@ -1,10 +1,22 @@
 import React, { useState } from 'react';
-import { TextField, Button, Typography, Box, Alert } from '@mui/material';
+import { TextField, Button, Typography, Box, Alert, useMediaQuery, ThemeProvider, createTheme } from '@mui/material';
 import axios from 'axios';
 import Layout from './Layout';
 import { useNavigate } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 import { Link } from 'react-router-dom';
+
+const theme = createTheme({
+  breakpoints: {
+    values: {
+      xs: 0,
+      sm: 600,
+      md: 960,
+      lg: 1280,
+      xl: 1920,
+    },
+  },
+});
 
 const Login = () => {
   const [username, setUsername] = useState('');
@@ -13,6 +25,7 @@ const Login = () => {
   const [success, setSuccess] = useState('');
   const navigate = useNavigate();
   const location = useLocation();
+  const isMobile = useMediaQuery(theme => theme.breakpoints.down('sm')); // Media query for small screens
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -52,9 +65,12 @@ const Login = () => {
   };
 
   return (
+    <ThemeProvider theme={theme}>
     <Layout>
-    <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center" minHeight="100vh">
-      <Typography variant="h4" gutterBottom>
+    <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center" minHeight="70vh"
+    padding={isMobile ? 2 : 4} // Adjust padding for mobile
+    >
+      <Typography variant={isMobile ? "h5" : "h4"} gutterBottom>
         Login
       </Typography>
       <form onSubmit={handleLogin} style={{ maxWidth: '400px', width: '100%' }}>
@@ -78,7 +94,7 @@ const Login = () => {
         />
         {error && <Alert severity="error">{error}</Alert>}
         {success && <Alert severity="success">{success}</Alert>}
-        <Button type="submit" variant="contained" color="primary" fullWidth>
+        <Button type="submit" variant="contained" color="primary" fullWidth style={{ marginTop: '1rem' }}>
           Login
         </Button>
         <Typography variant="body2" align="center" style={{ marginTop: '10px' }}>
@@ -87,14 +103,15 @@ const Login = () => {
             Register  Can be used only site deployed on custom domain, cant use on static domain of netlify
           </Button> */}
           <Link to="/register" style={{ color: 'inherit', textDecoration: 'none', display: 'inline-block' }}>
-          <Button variant="text">
-            Register
-          </Button>
+            <Button variant="text">
+              Register
+            </Button>
           </Link>
         </Typography>
       </form>
     </Box>
     </Layout>
+    </ThemeProvider>
   );
 };
 

@@ -6,12 +6,26 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 // import ProtectedRoute from './components/ProtectedRoute';
 import Register from './components/Register';
 import PrivateRoute from './components/PriviteRoute';
+import { ThemeProvider, createTheme } from '@mui/material';
+
+const theme = createTheme({
+  breakpoints: {
+    values: {
+      xs: 0,
+      sm: 600,
+      md: 960,
+      lg: 1280,
+      xl: 1920,
+    },
+  },
+});
 
 function App() {
   // const [user, setUser] = useState(null);
+  // const isMobile = useMediaQuery(theme => theme.breakpoints.down('sm')); // Media query for small screens
 
   return (
-
+    <ThemeProvider theme={theme}>
     <Router>
       <Routes>
         <Route path="/" element={<Login />} />
@@ -25,6 +39,7 @@ function App() {
         
       </Routes>
     </Router>
+    </ThemeProvider>
   
     
     // <div>
