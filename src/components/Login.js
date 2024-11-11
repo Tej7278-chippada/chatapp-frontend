@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { TextField, Button, Typography, Box, Alert, useMediaQuery, ThemeProvider, createTheme, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
+import { TextField, Button, Typography, Box, Alert, useMediaQuery, ThemeProvider, createTheme } from '@mui/material';
 import axios from 'axios';
 import Layout from './Layout';
 import { useNavigate } from 'react-router-dom';
@@ -23,9 +23,9 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
-  const [forgotPasswordOpen, setForgotPasswordOpen] = useState(false);
-  const [resetData, setResetData] = useState(''); // For email or phone number
-  const [resetMessage, setResetMessage] = useState('');
+  // const [forgotPasswordOpen, setForgotPasswordOpen] = useState(false);
+  // const [resetData, setResetData] = useState(''); // For email or phone number
+  // const [resetMessage, setResetMessage] = useState('');
   const navigate = useNavigate();
   const location = useLocation();
   const isMobile = useMediaQuery(theme => theme.breakpoints.down('sm')); // Media query for small screens
@@ -71,16 +71,16 @@ const Login = () => {
   //   setForgotPasswordOpen(true);
   // };
 
-  const handleResetPassword = async () => {
-    try {                     // 'http://localhost:5002/api/auth/forgot-password'
-      const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/auth/forgot-password`, { resetData });
-      setResetMessage('Your password has been reset successfully');
-      setResetData('');
-      setForgotPasswordOpen(false);
-    } catch (error) {
-      setResetMessage('Error resetting password. Please try again.');
-    }
-  };
+  // const handleResetPassword = async () => {
+  //   try {                     // 'http://localhost:5002/api/auth/forgot-password'
+  //     const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/auth/forgot-password`, { resetData });
+  //     setResetMessage('Your password has been reset successfully');
+  //     setResetData('');
+  //     setForgotPasswordOpen(false);
+  //   } catch (error) {
+  //     setResetMessage('Error resetting password. Please try again.');
+  //   }
+  // };
 
   const handleForgotPassword = () => {
     navigate('/forgot-password');
@@ -137,7 +137,7 @@ const Login = () => {
     </Box>
 
     {/* Forgot Password Dialog */}
-    <Dialog open={forgotPasswordOpen} onClose={() => setForgotPasswordOpen(false)}>
+    {/* <Dialog open={forgotPasswordOpen} onClose={() => setForgotPasswordOpen(false)}>
           <DialogTitle>Reset Password</DialogTitle>
           <DialogContent>
             <TextField
@@ -154,7 +154,7 @@ const Login = () => {
             <Button onClick={() => setForgotPasswordOpen(false)} color="secondary">Cancel</Button>
             <Button onClick={handleResetPassword} color="primary">Reset Password</Button>
           </DialogActions>
-        </Dialog>
+        </Dialog> */}
     </Layout>
     </ThemeProvider>
   );

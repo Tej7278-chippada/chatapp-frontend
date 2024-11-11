@@ -3,7 +3,7 @@ import axios from 'axios';
 import { Box, TextField, Button, List, ListItem, Typography, Card, CardContent} from '@mui/material';
 import Layout from './Layout';
 import { useNavigate } from 'react-router-dom';
-import { useParams } from 'react-router-dom';
+// import { useParams } from 'react-router-dom';
 
 
 const Chat = ({ userId, receiverId }) => {
@@ -12,7 +12,7 @@ const Chat = ({ userId, receiverId }) => {
   const [error, setError] = useState('');
   const tokenUsername = localStorage.getItem('tokenUsername'); // Get the username from local storage
   const navigate = useNavigate();
-  const { username } = useParams(); // Get the username from the URL
+  // const { username } = useParams(); // Get the username from the URL
   console.log('Username from URL:', tokenUsername);  // Debugging: should show the extracted username
 
 
