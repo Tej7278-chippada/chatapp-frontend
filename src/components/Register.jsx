@@ -17,6 +17,8 @@ const theme = createTheme({
 
 const Register = () => {
   const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
@@ -50,10 +52,12 @@ const Register = () => {
       return;
     }
 
-    try {                             // 'http://localhost:5002/api/auth/register'
-      const response = await axios.post('https://tej-chat-app-8cd7e70052a5.herokuapp.com/api/auth/register', { username, password });
+    try {                             // 'http://localhost:5002/api/auth/register' 'https://tej-chat-app-8cd7e70052a5.herokuapp.com/api/auth/register'
+      const response = await axios.post('http://localhost:5002/api/auth/register', { username, password, phone, email });
       setSuccess(`Your new account has been created with username: ${username}`);
       setUsername('');
+      setEmail('');
+      setPhone('');
       setPassword('');
       setConfirmPassword('');
       if (response.status === 201) {
@@ -82,6 +86,8 @@ const Register = () => {
           value={username}
           onChange={(e) => setUsername(e.target.value)}
         />
+        <TextField label="Email" fullWidth margin="normal" value={email} onChange={(e) => setEmail(e.target.value)} />
+        <TextField label="Phone" fullWidth margin="normal" value={phone} onChange={(e) => setPhone(e.target.value)} />
         <TextField
           label="Password"
           type="password"

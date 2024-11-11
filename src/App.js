@@ -7,6 +7,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Register from './components/Register';
 import PrivateRoute from './components/PriviteRoute';
 import { ThemeProvider, createTheme } from '@mui/material';
+import ForgotPassword from './components/ForgotPassword';
 
 const theme = createTheme({
   breakpoints: {
@@ -36,7 +37,7 @@ function App() {
               <Chat />
             </PrivateRoute>
         } />
-        
+        <Route path="/forgot-password" element={<ForgotPassword />} />
       </Routes>
     </Router>
     </ThemeProvider>

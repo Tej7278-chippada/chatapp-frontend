@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { TextField, Button, Typography, Box, Alert, useMediaQuery, ThemeProvider, createTheme } from '@mui/material';
+import { TextField, Button, Typography, Box, Alert, useMediaQuery, ThemeProvider, createTheme, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 import axios from 'axios';
 import Layout from './Layout';
 import { useNavigate } from 'react-router-dom';
@@ -23,6 +23,9 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const [forgotPasswordOpen, setForgotPasswordOpen] = useState(false);
+  const [resetData, setResetData] = useState(''); // For email or phone number
+  const [resetMessage, setResetMessage] = useState('');
   const navigate = useNavigate();
   const location = useLocation();
   const isMobile = useMediaQuery(theme => theme.breakpoints.down('sm')); // Media query for small screens
@@ -32,8 +35,8 @@ const Login = () => {
     setError('');
     setSuccess('');
 
-    try {                              // 'http://localhost:5002/api/auth/login'
-      const response = await axios.post('https://tej-chat-app-8cd7e70052a5.herokuapp.com/api/auth/login', { username, password });
+    try {                              // 'http://localhost:5002/api/auth/login' 'https://tej-chat-app-8cd7e70052a5.herokuapp.com/api/auth/login'
+      const response = await axios.post('http://localhost:5002/api/auth/login', { username, password });
       setSuccess(`You are logged in with username: ${username}`);
       setUsername('');
       setPassword('');
@@ -62,6 +65,25 @@ const Login = () => {
         setError('An error occurred while logging in.');
       }
     }
+  };
+
+  // const handleForgotPassword = () => {
+  //   setForgotPasswordOpen(true);
+  // };
+
+  const handleResetPassword = async () => {
+    try {
+      const response = await axios.post('http://localhost:5002/api/auth/forgot-password', { resetData });
+      setResetMessage('Your password has been reset successfully');
+      setResetData('');
+      setForgotPasswordOpen(false);
+    } catch (error) {
+      setResetMessage('Error resetting password. Please try again.');
+    }
+  };
+
+  const handleForgotPassword = () => {
+    navigate('/forgot-password');
   };
 
   return (
@@ -97,6 +119,9 @@ const Login = () => {
         <Button type="submit" variant="contained" color="primary" fullWidth style={{ marginTop: '1rem' }}>
           Login
         </Button>
+        <Button variant="text" color="primary" fullWidth onClick={handleForgotPassword} style={{ marginTop: '10px' }}>
+              Forgot Password?
+            </Button>
         <Typography variant="body2" align="center" style={{ marginTop: '10px' }}>
           Don't have an account?{' '}
           {/* <Button href="/register" variant="text">
@@ -110,6 +135,26 @@ const Login = () => {
         </Typography>
       </form>
     </Box>
+
+    {/* Forgot Password Dialog */}
+    <Dialog open={forgotPasswordOpen} onClose={() => setForgotPasswordOpen(false)}>
+          <DialogTitle>Reset Password</DialogTitle>
+          <DialogContent>
+            <TextField
+              label="Email or Phone Number"
+              variant="outlined"
+              fullWidth
+              margin="normal"
+              value={resetData}
+              onChange={(e) => setResetData(e.target.value)}
+            />
+            {resetMessage && <Alert severity="info" style={{ marginTop: '10px' }}>{resetMessage}</Alert>}
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => setForgotPasswordOpen(false)} color="secondary">Cancel</Button>
+            <Button onClick={handleResetPassword} color="primary">Reset Password</Button>
+          </DialogActions>
+        </Dialog>
     </Layout>
     </ThemeProvider>
   );
