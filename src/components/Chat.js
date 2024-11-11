@@ -13,7 +13,7 @@ const Chat = ({ userId, receiverId }) => {
   const tokenUsername = localStorage.getItem('tokenUsername'); // Get the username from local storage
   const navigate = useNavigate();
   const { username } = useParams(); // Get the username from the URL
-  console.log('Username from URL:', username);  // Debugging: should show the extracted username
+  console.log('Username from URL:', tokenUsername);  // Debugging: should show the extracted username
 
 
   // const fetchMessages = async () => {
@@ -24,8 +24,8 @@ const Chat = ({ userId, receiverId }) => {
   const [loading, setLoading] = useState(true);
   // Function to fetch messages from the backend
   const fetchMessages = async () => {
-    try {                             // 'http://localhost:5002/api/messages'
-      const response = await axios.get('https://tej-chat-app-8cd7e70052a5.herokuapp.com/api/messages'); // Adjust the URL based on your proxy setup
+    try {                             // 'http://localhost:5002/api/messages' 'https://tej-chat-app-8cd7e70052a5.herokuapp.com/api/messages'
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/messages`); // Adjust the URL based on your proxy setup
       setMessages(response.data); // Set the fetched messages in state
     } catch (error) {
       console.error('Error fetching messages:', error);

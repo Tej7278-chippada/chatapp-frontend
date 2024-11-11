@@ -34,9 +34,9 @@ const Login = () => {
     e.preventDefault();
     setError('');
     setSuccess('');
-
+                                        // `${process.env.REACT_APP_API_URL}/transfer`
     try {                              // 'http://localhost:5002/api/auth/login' 'https://tej-chat-app-8cd7e70052a5.herokuapp.com/api/auth/login'
-      const response = await axios.post('http://localhost:5002/api/auth/login', { username, password });
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/auth/login`, { username, password });
       setSuccess(`You are logged in with username: ${username}`);
       setUsername('');
       setPassword('');
@@ -72,8 +72,8 @@ const Login = () => {
   // };
 
   const handleResetPassword = async () => {
-    try {
-      const response = await axios.post('http://localhost:5002/api/auth/forgot-password', { resetData });
+    try {                     // 'http://localhost:5002/api/auth/forgot-password'
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/auth/forgot-password`, { resetData });
       setResetMessage('Your password has been reset successfully');
       setResetData('');
       setForgotPasswordOpen(false);

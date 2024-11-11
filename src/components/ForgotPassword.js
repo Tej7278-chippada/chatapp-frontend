@@ -15,8 +15,8 @@ const ForgotPassword = () => {
 
   const handleRequestOtp = async () => {
     try {
-      // Send request to backend to initiate OTP process
-      await axios.post('http://localhost:5002/api/auth/request-otp', { username, contact });
+      // Send request to backend to initiate OTP process  // 'http://localhost:5002/api/auth/request-otp'
+      await axios.post(`${process.env.REACT_APP_API_URL}/api/auth/request-otp`, { username, contact });
       setSuccess('OTP sent to your email or phone number');
       setError('');
       setStep(2); // Move to the OTP verification step
@@ -28,8 +28,8 @@ const ForgotPassword = () => {
 
   const handleResetPassword = async () => {
     try {
-      // Send OTP and new password to backend for validation and password reset
-      await axios.post('http://localhost:5002/api/auth/reset-password', {
+      // Send OTP and new password to backend for validation and password reset // 'http://localhost:5002/api/auth/reset-password'
+      await axios.post(`${process.env.REACT_APP_API_URL}/api/auth/reset-password`, {
         username,
         contact,
         otp,
