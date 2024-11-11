@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { TextField, Button, Alert, Typography, Box, CircularProgress } from '@mui/material';
 import axios from 'axios';
 // import Layout from './Layout';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 
 const ForgotPassword = () => {
   const [username, setUsername] = useState('');
@@ -14,7 +14,7 @@ const ForgotPassword = () => {
   const [success, setSuccess] = useState('');
   const [error, setError] = useState('');
   const [step, setStep] = useState(1);
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const [resendDisabled, setResendDisabled] = useState(false);
   const [resendTimer, setResendTimer] = useState(60);
   const [loading, setLoading] = useState(false);

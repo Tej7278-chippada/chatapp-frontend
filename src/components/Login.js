@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
-import { TextField, Button, Typography, Box, Alert, useMediaQuery, ThemeProvider, createTheme, Dialog, DialogContent, DialogActions, IconButton } from '@mui/material';
+import { TextField, Button, Typography, Box, Alert, useMediaQuery, ThemeProvider, createTheme, Dialog, DialogContent, DialogActions,
+  //  IconButton
+   } from '@mui/material';
 import axios from 'axios';
 import Layout from './Layout';
 import { useNavigate } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import ForgotPassword from './ForgotPassword';
-import CloseIcon from '@mui/icons-material/Close';
+// import CloseIcon from '@mui/icons-material/Close';
 
 const theme = createTheme({
   breakpoints: {
