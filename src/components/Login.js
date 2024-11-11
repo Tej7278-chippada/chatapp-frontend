@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
-import { TextField, Button, Typography, Box, Alert, useMediaQuery, ThemeProvider, createTheme } from '@mui/material';
+import { TextField, Button, Typography, Box, Alert, useMediaQuery, ThemeProvider, createTheme, Dialog, DialogContent, DialogActions, IconButton } from '@mui/material';
 import axios from 'axios';
 import Layout from './Layout';
 import { useNavigate } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 import { Link } from 'react-router-dom';
+import ForgotPassword from './ForgotPassword';
+import CloseIcon from '@mui/icons-material/Close';
 
 const theme = createTheme({
   breakpoints: {
@@ -23,7 +25,7 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
-  // const [forgotPasswordOpen, setForgotPasswordOpen] = useState(false);
+  const [forgotPasswordOpen, setForgotPasswordOpen] = useState(false);
   // const [resetData, setResetData] = useState(''); // For email or phone number
   // const [resetMessage, setResetMessage] = useState('');
   const navigate = useNavigate();
@@ -83,7 +85,8 @@ const Login = () => {
   // };
 
   const handleForgotPassword = () => {
-    navigate('/forgot-password');
+    // navigate('/forgot-password');
+    setForgotPasswordOpen(true);
   };
 
   return (
@@ -134,6 +137,27 @@ const Login = () => {
           </Link>
         </Typography>
       </form>
+      <Dialog open={forgotPasswordOpen} onClose={() => setForgotPasswordOpen(false)} maxWidth="sm" fullWidth>
+            <DialogContent>
+              {/* Close button */}
+        {/* <IconButton
+          onClick={() => setForgotPasswordOpen(false)}
+          style={{
+            position: 'absolute',
+            top: '1rem',
+            right: '1rem',
+            backgroundColor: 'rgba(0, 0, 0, 0.1)',
+            color: '#333'
+          }}
+        >
+          <CloseIcon />
+        </IconButton> */}
+              <ForgotPassword />
+            </DialogContent>
+            <DialogActions>
+            <Button onClick={() => setForgotPasswordOpen(false)} color="secondary">Close</Button>
+          </DialogActions>
+          </Dialog>
     </Box>
 
     {/* Forgot Password Dialog */}
