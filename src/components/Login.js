@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { TextField, Button, Typography, Box, Alert, useMediaQuery, ThemeProvider, createTheme, Dialog, DialogContent, DialogActions,
+import { TextField, Button, Typography, Box, Alert, useMediaQuery, ThemeProvider, createTheme, Dialog, DialogContent, DialogActions, CircularProgress,
   //  IconButton
    } from '@mui/material';
 import axios from 'axios';
@@ -23,7 +23,8 @@ const theme = createTheme({
 });
 
 const Login = () => {
-  const [username, setUsername] = useState('');
+  // const [username, setUsername] = useState('');
+  const [identifier, setIdentifier] = useState(''); // Can be email or username
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
@@ -33,16 +34,25 @@ const Login = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const isMobile = useMediaQuery(theme => theme.breakpoints.down('sm')); // Media query for small screens
+  const [loading, setLoading] = useState(false);
+  
+
+  // const isEmail = (input) => {
+  //   // Regex to check if input is an email
+  //   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  //   return emailRegex.test(input);
+  // };
 
   const handleLogin = async (e) => {
     e.preventDefault();
     setError('');
     setSuccess('');
+    setLoading(true);
                                         // `${process.env.REACT_APP_API_URL}/transfer`
     try {                              // 'http://localhost:5002/api/auth/login' 'https://tej-chat-app-8cd7e70052a5.herokuapp.com/api/auth/login'
-      const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/auth/login`, { username, password });
-      setSuccess(`You are logged in with username: ${username}`);
-      setUsername('');
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/auth/login`, { identifier, password });
+      setSuccess(`You are logged in with ${identifier.includes('@') ? 'email' : 'username'}: ${identifier}`);
+      setIdentifier('');
       setPassword('');
 
       const { authToken, tokenUsername } = response.data;
@@ -62,12 +72,14 @@ const Login = () => {
       // }
     } catch (error) {
       if (error.response && error.response.status === 404) {
-        setError(`Username ${username} doesn't match any existing account.`);
+        setError(`${identifier.includes('@') ? 'Email' : 'Username'} ${identifier} doesn't match any existing account.`);
       } else if (error.response && error.response.status === 401) {
-        setError(`Password doesn't match for username: ${username}`);
+        setError(`Password doesn't match for ${identifier.includes('@') ? 'Email' : 'Username'} : ${identifier}`);
       } else {
         setError('An error occurred while logging in.');
       }
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -103,12 +115,12 @@ const Login = () => {
       <form onSubmit={handleLogin} style={{ maxWidth: '400px', width: '100%' }}>
       {location.state?.message && <div>{location.state.message}</div>}
         <TextField
-          label="Username"
+          label="Username or Email"
           variant="outlined"
           fullWidth
           margin="normal"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
+          value={identifier}
+          onChange={(e) => setIdentifier(e.target.value)}
         />
         <TextField
           label="Password"
@@ -121,8 +133,8 @@ const Login = () => {
         />
         {error && <Alert severity="error">{error}</Alert>}
         {success && <Alert severity="success">{success}</Alert>}
-        <Button type="submit" variant="contained" color="primary" fullWidth style={{ marginTop: '1rem' }}>
-          Login
+        <Button type="submit" variant="contained" color="primary" fullWidth style={{ marginTop: '1rem' }} disabled={loading}>
+        {loading ? <CircularProgress size={24} /> : 'Login'}
         </Button>
         <Button variant="text" color="primary" fullWidth onClick={handleForgotPassword} style={{ marginTop: '10px' }}>
               Forgot Password?
