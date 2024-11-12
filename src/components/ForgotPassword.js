@@ -1,6 +1,6 @@
 // components/ForgotPassword.js
-import React, { useEffect, useState } from 'react';
-import { TextField, Button, Alert, Typography, Box, CircularProgress } from '@mui/material';
+import React, { useEffect, useRef, useState } from 'react';
+import { TextField, Button, Alert, Typography, Box, CircularProgress, Grid } from '@mui/material';
 import axios from 'axios';
 // import Layout from './Layout';
 // import { useNavigate } from 'react-router-dom';
@@ -8,7 +8,7 @@ import axios from 'axios';
 const ForgotPassword = () => {
   const [username, setUsername] = useState('');
   const [contact, setContact] = useState('');
-  const [otp, setOtp] = useState('');
+  const [otp, setOtp] = useState(Array(6).fill(''));
   const [newPassword, setNewPassword] = useState('');
   const [confirmNewPassword, setConfirmNewPassword] = useState('');
   const [success, setSuccess] = useState('');
@@ -18,6 +18,7 @@ const ForgotPassword = () => {
   const [resendDisabled, setResendDisabled] = useState(false);
   const [resendTimer, setResendTimer] = useState(60);
   const [loading, setLoading] = useState(false);
+  const otpRefs = useRef  ([]);
 
 
   useEffect(() => {
@@ -30,6 +31,30 @@ const ForgotPassword = () => {
     }
     return () => clearInterval(timer);
   }, [resendDisabled, resendTimer]);
+
+  const handleOtpChange = (event, index) => {
+    const value = event.target.value;
+
+    // Allow only digits and handle input change
+    if (/^[0-9]?$/.test(value)) {
+      const newOtp = [...otp];
+      newOtp[index] = value;
+      setOtp(newOtp);
+
+      // Move to the next input if a digit is entered
+      if (value && index < otp.length - 1) {
+        otpRefs.current[index + 1].focus();
+      }
+    }
+  };
+
+  const handleKeyDown = (event, index) => {
+    if (event.key === 'Backspace') {
+      if (!otp[index] && index > 0) {
+        otpRefs.current[index - 1].focus(); // Move back on empty backspace
+      }
+    }
+  };
 
   // Regex to validate password format
   const passwordRegex = /^[A-Za-z][A-Za-z0-9@]{7,}$/;
@@ -84,7 +109,7 @@ const ForgotPassword = () => {
       await axios.post(`${process.env.REACT_APP_API_URL}/api/auth/reset-password`, {
         username,
         contact,
-        otp,
+        otp: otp.join(''),
         newPassword,
       });
       setSuccess(`Your password has been reset successfully for account: ${username}`);
@@ -130,13 +155,28 @@ const ForgotPassword = () => {
         )}
         {step === 2 && (
           <>
-            <TextField
-              label="OTP"
-              fullWidth
-              margin="normal"
-              value={otp}
-              onChange={(e) => setOtp(e.target.value)}
-            />
+            <Typography variant="body1" gutterBottom>Enter the 6-digit OTP:</Typography>
+            <Grid container spacing={1} justifyContent="center">
+              {otp.map((digit, index) => (
+                <Grid item key={index} xs="auto">
+                  <TextField
+                    inputRef={(el) => (otpRefs.current[index] = el)} // Store refs for each input
+                    variant="outlined"
+                    inputProps={{
+                      maxLength: 1,
+                      style: { textAlign: 'center', fontSize: '1.5rem' },
+                    }}
+                    value={digit}
+                    onChange={(e) => handleOtpChange(e, index)}
+                    onKeyDown={(e) => handleKeyDown(e, index)}
+                    sx={{
+                      width: { xs: '2.5rem', sm: '3rem', md: '3.5rem' },
+                      margin: { xs: '1 0.25rem', sm: '1 0.5rem', md: '1 0.25rem' },
+                    }}
+                  />
+                </Grid>
+              ))}
+            </Grid>
             <TextField
               label="New Password"
               type="password"
